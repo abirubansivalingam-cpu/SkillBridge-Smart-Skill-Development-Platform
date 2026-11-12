@@ -1,0 +1,41 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#090d1b">
+  <meta name="description" content="SkillBridge — learn with direction, build skills and track your progress.">
+  <title>{% block title %}SkillBridge{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <nav class="nav">
+    <a class="brand" href="{% url 'home' %}"><span class="brand-mark">S</span><span>Skill<span class="brand-accent">Bridge</span></span></a>
+    <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="primary-navigation"><span></span><span></span><span></span></button>
+    <div class="navlinks" id="primary-navigation">
+      <a href="{% url 'course_list' %}">Explore</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'quiz_list' %}">Assessments</a>
+        <a href="{% url 'recommendations' %}">For you</a>
+        <a href="{% url 'profile' %}">Profile</a>
+        <form method="post" action="{% url 'logout' %}" class="inline">{% csrf_token %}<button class="navlogout">Log out</button></form>
+      {% else %}
+        <a href="{% url 'login' %}">Log in</a>
+        <a class="btn btn-small" href="{% url 'register' %}">Get started <span>↗</span></a>
+      {% endif %}
+    </div>
+  </nav>
+  {% if messages %}<div class="messages">{% for message in messages %}<div class="message">{{ message }}</div>{% endfor %}</div>{% endif %}
+  <main>{% block content %}{% endblock %}</main>
+  <footer>
+    <div><a class="footer-brand" href="{% url 'home' %}">SkillBridge<span>®</span></a><p>Learn with direction. Grow with confidence.</p></div>
+    <span>© 2026 SkillBridge · MCA Project</span>
+  </footer>
+  <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>
